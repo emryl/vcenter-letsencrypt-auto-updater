@@ -67,7 +67,7 @@ CHAIN_WITH_ROOT=/root/.acme.sh/$CERTNAME/fullchainwithroot.cer
 # Add Self-Signed to fullchain as required by certificate-manager
 
 curl -s https://letsencrypt.org/certs/isrgrootx1.pem > ${CHAIN_WITH_ROOT}
-cat ${CHAIN} > /root/.acme.sh/$CERTNAME/fullchainwithroot.cer
+cat ${CHAIN} >> /root/.acme.sh/$CERTNAME/fullchainwithroot.cer
 
 # We delay briefly between account and password, as it's trying to open /dev/tty
 # which has the potential to lose characters. To be on the safe side, we sleep
