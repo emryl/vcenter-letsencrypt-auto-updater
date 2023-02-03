@@ -62,6 +62,12 @@ fi
 # We need to update this machine with the new certificate.
 KEY=/root/.acme.sh/$CERTNAME/$CERTNAME.key
 CHAIN=/root/.acme.sh/$CERTNAME/fullchain.cer
+CHAIN_WITH_ROOT=/root/.acme.sh/$CERTNAME/fullchainwithroot.cer
+
+# Add Self-Signed to fullchain as required by certificate-manager
+
+curl -s https://letsencrypt.org/certs/isrgrootx1.pem > ${CHAIN_WITH_ROOT}
+cat ${CHAIN} > /root/.acme.sh/$CERTNAME/fullchainwithroot.cer
 
 # We delay briefly between account and password, as it's trying to open /dev/tty
 # which has the potential to lose characters. To be on the safe side, we sleep
@@ -75,7 +81,7 @@ CHAIN=/root/.acme.sh/$CERTNAME/fullchain.cer
   sleep 1
   printf '2\n'
   sleep 1
-  printf '%s\n%s\n%s\ny\n\n' "$CERT" "$KEY" "$CHAIN"
+  printf '%s\n%s\n%s\ny\n\n' "$CERT" "$KEY" "$CHAIN_WITH_ROOT"
 ) | setsid /usr/lib/vmware-vmca/bin/certificate-manager
 
 # 'setsid' detatches certman from /dev/tty, so it's forced to use stdin.
